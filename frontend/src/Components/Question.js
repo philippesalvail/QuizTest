@@ -4,17 +4,19 @@ import styled from "styled-components";
 import {answeredSubmitted, nextQuestion} from "../Model/functions";
 
 function Question() {
-  const [answerSelected, setAnswerSelected] = React.useState("");
+  const [answerSelected, setAnswerSelected] = React.useState(null);
   const [correctAnswer, setCorrectAnswer] = React.useState(null);
   const [question, setQuestion] = React.useState(null);
   const [next, setNext] = React.useState(false);
   const [playerScore, setPlayerScore] = React.useState(0);
+  const [choices, setChoices] = React.useState(null);
   React.useEffect(() => {
     fetch("/getQuestion")
       .then((response) => response.json())
-      .then((questionRetrieved) =>
-        setQuestion(questionRetrieved.questionWithoutAnswer)
-      )
+      .then((questionRetrieved) => {
+        setQuestion(questionRetrieved.questionWithoutAnswer);
+        setChoices(questionRetrieved.questionWithoutAnswer.options);
+      })
       .catch((error) => console.log(error));
   }, [next]);
 
@@ -31,22 +33,12 @@ function Question() {
             <div>
               <MultipleChoice
                 setAnswerSelected={setAnswerSelected}
-                answers={question.options}
+                answerSelected={answerSelected}
+                answers={choices}
+                question={question}
+                setCorrectAnswer={setCorrectAnswer}
+                setQuestion={setQuestion}
               />
-
-              <ButtonRow>
-                <SubmitBtn
-                  onClick={() => {
-                    answeredSubmitted(
-                      question.questionId,
-                      answerSelected,
-                      setCorrectAnswer
-                    );
-                  }}
-                >
-                  submit
-                </SubmitBtn>
-              </ButtonRow>
             </div>
           </QuestionForm>
           {correctAnswer && correctAnswer.correct && (
@@ -59,7 +51,8 @@ function Question() {
                     next,
                     setCorrectAnswer,
                     playerScore,
-                    setPlayerScore
+                    setPlayerScore,
+                    setChoices
                   );
                 }}
               >
@@ -92,12 +85,7 @@ const QuestionSelected = styled.div`
   width: 40%;
   margin: 0 auto;
 `;
-const SubmitBtn = styled.button`
-  background-color: #023047;
-  font-size: 15px;
-  color: #ffb703;
-  width: 20%;
-`;
+
 const NextQuestionBtn = styled.button`
   background-color: #023047;
   font-size: 15px;
@@ -121,9 +109,6 @@ const QuestionForm = styled.div`
   background-color: #219ebc;
 `;
 
-const ButtonRow = styled.div`
-  text-align: center;
-`;
 const QuestionPage = styled.div`
   display: flex;
   flex-direction: column;

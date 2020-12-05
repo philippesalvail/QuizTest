@@ -12,7 +12,9 @@ export const answeredSubmitted = (
     }),
   })
     .then((response) => response.json())
-    .then((answer) => setCorrectAnswer(answer))
+    .then((answer) => {
+      setCorrectAnswer(answer);
+    })
     .catch((error) => alert(error.message));
 };
 
@@ -21,7 +23,8 @@ export const nextQuestion = (
   next,
   setcorrectAnswer,
   playerScore,
-  setPlayerScore
+  setPlayerScore,
+  setChoices
 ) => {
   setNext(!next);
   setcorrectAnswer(null);

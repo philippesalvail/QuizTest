@@ -8,14 +8,21 @@ const options = {
   useUnifiedTopology: true,
 };
 const getQuestion = async (req, res) => {
-  let randomNumber = Math.floor(Math.random() * 15) + 1;
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Quiz");
+    const questionListLength = await database
+      .collection("questions")
+      .find()
+      .toArray();
+
+    let questionNumber =
+      Math.floor(Math.random() * questionListLength.length) + 1;
+
     const questionFound = await database
       .collection("questions")
-      .findOne({id: randomNumber.toString()});
+      .findOne({id: questionNumber.toString()});
 
     const noAnswers = questionFound.options.map((option) => {
       delete option["isCorrect"];
