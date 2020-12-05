@@ -8,7 +8,7 @@ const options = {
   useUnifiedTopology: true,
 };
 const getQuestion = async (req, res) => {
-  let randomNumber = 2;
+  let randomNumber = Math.floor(Math.random() * 15) + 1;
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
