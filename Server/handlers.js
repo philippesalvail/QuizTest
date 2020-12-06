@@ -62,7 +62,9 @@ const checkAnswer = async (req, res) => {
       (answer) => answer.isCorrect === true
     );
 
-    userAnswer.isCorrect
+    console.log("computerAnswer: ", computerAnswer);
+
+    userAnswer["isCorrect"] === true
       ? res.status(201).send({message: "Wait to Go!!!", correct: true})
       : res.status(201).send({
           message: `No Sorry, the correct answer was ${computerAnswer.label}`,
