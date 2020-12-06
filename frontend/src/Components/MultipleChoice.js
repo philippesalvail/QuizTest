@@ -23,6 +23,7 @@ const MultipleChoice = ({
     })
       .then((response) => response.json())
       .then((answer) => {
+        console.log("answer: ", answer);
         setCorrectAnswer(answer);
         let radios = document.getElementsByName("choice");
         for (let i = 0; i < radios.length; i++) {
