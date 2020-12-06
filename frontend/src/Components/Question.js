@@ -3,6 +3,7 @@ import MultipleChoice from "./MultipleChoice";
 import styled from "styled-components";
 import {nextQuestion} from "../Model/functions";
 import ScoreHistory from "./ScoreHistory";
+import Loading from "./Loader";
 
 function Question() {
   const [answerSelected, setAnswerSelected] = React.useState(null);
@@ -35,65 +36,69 @@ function Question() {
   };
 
   return (
-    <QuestionPage>
-      <SideBar>
-        <ScoreHistoryBanner>Highest Score to Lowest</ScoreHistoryBanner>
-        <ScoreHistory scores={scores} />
-      </SideBar>
-      {question && (
-        <Wrapper>
-          <QuestionSelected>
-            <WelcomeBanner>
-              <UserScore>Score: {playerScore} / 50</UserScore>{" "}
-            </WelcomeBanner>
-            <QuestionForm>
-              <QuestionAsked>{question.question}</QuestionAsked>
-              <div>
-                <MultipleChoice
-                  setAnswerSelected={setAnswerSelected}
-                  answerSelected={answerSelected}
-                  answers={choices}
-                  question={question}
-                  setCorrectAnswer={setCorrectAnswer}
-                  setQuestion={setQuestion}
-                />
-              </div>
-            </QuestionForm>
-            {correctAnswer && correctAnswer.correct && (
-              <RightAnswer>
-                <div>{correctAnswer.message} </div>
-                <NextQuestionBtn
-                  onClick={() => {
-                    nextQuestion(
-                      setNext,
-                      next,
-                      setCorrectAnswer,
-                      playerScore,
-                      setPlayerScore,
-                      setChoices
-                    );
-                  }}
-                >
-                  Next Question
-                </NextQuestionBtn>
-              </RightAnswer>
-            )}
-            {correctAnswer && !correctAnswer.correct && (
-              <WrongAnswer>
-                <div>{correctAnswer.message}</div>
-                <ResetBtn
-                  onClick={() => {
-                    resetGame();
-                  }}
-                >
-                  Play Again?
-                </ResetBtn>
-              </WrongAnswer>
-            )}
-          </QuestionSelected>
-        </Wrapper>
+    <>
+      {question ? (
+        <QuestionPage>
+          <SideBar>
+            <ScoreHistoryBanner>Highest Score to Lowest</ScoreHistoryBanner>
+            <ScoreHistory scores={scores} />
+          </SideBar>
+          <Wrapper>
+            <QuestionSelected>
+              <WelcomeBanner>
+                <UserScore>Score: {playerScore} / 50</UserScore>{" "}
+              </WelcomeBanner>
+              <QuestionForm>
+                <QuestionAsked>{question.question}</QuestionAsked>
+                <div>
+                  <MultipleChoice
+                    setAnswerSelected={setAnswerSelected}
+                    answerSelected={answerSelected}
+                    answers={choices}
+                    question={question}
+                    setCorrectAnswer={setCorrectAnswer}
+                    setQuestion={setQuestion}
+                  />
+                </div>
+              </QuestionForm>
+              {correctAnswer && correctAnswer.correct && (
+                <RightAnswer>
+                  <div>{correctAnswer.message} </div>
+                  <NextQuestionBtn
+                    onClick={() => {
+                      nextQuestion(
+                        setNext,
+                        next,
+                        setCorrectAnswer,
+                        playerScore,
+                        setPlayerScore,
+                        setChoices
+                      );
+                    }}
+                  >
+                    Next Question
+                  </NextQuestionBtn>
+                </RightAnswer>
+              )}
+              {correctAnswer && !correctAnswer.correct && (
+                <WrongAnswer>
+                  <div>{correctAnswer.message}</div>
+                  <ResetBtn
+                    onClick={() => {
+                      resetGame();
+                    }}
+                  >
+                    Play Again?
+                  </ResetBtn>
+                </WrongAnswer>
+              )}
+            </QuestionSelected>
+          </Wrapper>
+        </QuestionPage>
+      ) : (
+        <Loading />
       )}
-    </QuestionPage>
+    </>
   );
 }
 const Wrapper = styled.div`
