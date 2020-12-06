@@ -23,13 +23,16 @@ const MultipleChoice = ({
     })
       .then((response) => response.json())
       .then((answer) => {
-        console.log("answer: ", answer);
         setCorrectAnswer(answer);
         let radios = document.getElementsByName("choice");
         for (let i = 0; i < radios.length; i++) {
           radios[i].checked = false;
         }
         setAnswerSelected(null);
+        // if (answer.correct) {
+        //   let audio = new Audio("../Images/RightAnswer");
+        //   audio.play();
+        // }
       })
       .catch((error) => alert(error.message));
   };
@@ -40,7 +43,7 @@ const MultipleChoice = ({
         {answers &&
           answers.map((answer, index) => {
             return (
-              <Choice>
+              <Choice key={index}>
                 <Answer>
                   <ChoiceInput
                     type="radio"
