@@ -10,13 +10,16 @@ function ScoreHistory({scores}) {
   const indexOfLastPage = currentPage * scoresPerPage;
   const indexOfFirstPage = indexOfLastPage - scoresPerPage;
   const currentScores = scores.slice(indexOfFirstPage - indexOfLastPage);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  let sortedScored = scores.sort(function (a, b) {
+    return b - a;
+  });
 
   return (
     <ScoreList>
-      {scores.length > 0 ? (
-        scores.map((score, index) => {
+      {sortedScored.length > 0 ? (
+        sortedScored.map((score, index) => {
           return (
             <Score>
               <Record>{index + 1}:</Record>
