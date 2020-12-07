@@ -12,7 +12,14 @@ function Question() {
   const [next, setNext] = React.useState(false);
   const [playerScore, setPlayerScore] = React.useState(0);
   const [choices, setChoices] = React.useState(null);
+
   const [scores, setScores] = React.useState([]);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [scoresPerPage] = React.useState(2);
+
+  const indexOfLastScore = currentPage * scoresPerPage;
+  const indexOfFirstScore = indexOfLastScore - scoresPerPage;
+  const currentScores = scores.slice(indexOfFirstScore, indexOfLastScore);
 
   React.useEffect(() => {
     fetch("/getQuestion")
@@ -41,7 +48,12 @@ function Question() {
         <QuestionPage>
           <SideBar>
             <ScoreHistoryBanner>Highest Score to Lowest</ScoreHistoryBanner>
-            <ScoreHistory scores={scores} />
+            <ScoreHistory
+              scores={currentScores}
+              totalScores={scores.length}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+            />
           </SideBar>
           <Wrapper>
             <QuestionSelected>
