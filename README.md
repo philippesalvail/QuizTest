@@ -4,7 +4,7 @@
 
 # 1) You launch the app by typing localhost:3000 in the URL
 
-# 2) You are then presented with a random question and a "Score" dashboard beside.
+# 2) You are then presented with an "unread" random question and a "Score" dashboard beside. The server only returns questions that were not read. Even after the player restarts the game.
 
 # 3) You answer the question by selecting one of the multiple choice options and then clicking on submit.
 

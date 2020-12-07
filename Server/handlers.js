@@ -20,24 +20,35 @@ const getQuestion = async (req, res) => {
     let questionNumber =
       Math.floor(Math.random() * questionListLength.length) + 1;
 
-    const questionFound = await database
-      .collection("questions")
-      .findOne({id: questionNumber.toString()});
+    let isNotRead = true;
 
-    const noAnswers = questionFound.options.map((option) => {
-      delete option["isCorrect"];
-      return option;
-    });
+    while (isNotRead) {
+      console.log("while in loop");
+      const questionFound = await database
+        .collection("questions")
+        .findOne({id: questionNumber.toString()});
 
-    const questionWithoutAnswer = {
-      questionId: questionFound.id,
-      question: questionFound.question,
-      options: noAnswers,
-    };
+      console.log("questionFound: ", questionFound);
 
-    res
-      .status(200)
-      .send({status: "success", questionWithoutAnswer: questionWithoutAnswer});
+      if (questionFound.isRead === false) {
+        const noAnswers = questionFound.options.map((option) => {
+          delete option["isCorrect"];
+          return option;
+        });
+
+        const questionWithoutAnswer = {
+          questionId: questionFound.id,
+          question: questionFound.question,
+          options: noAnswers,
+        };
+
+        res.status(200).send({
+          status: "success",
+          questionWithoutAnswer: questionWithoutAnswer,
+        });
+        isNotRead = false;
+      }
+    }
   } catch (error) {
     console.log("error: ", error);
     res.status(500).send({status: "error 500", error: error.message});
@@ -62,7 +73,9 @@ const checkAnswer = async (req, res) => {
       (answer) => answer.isCorrect === true
     );
 
-    console.log("computerAnswer: ", computerAnswer);
+    await database
+      .collection("questions")
+      .updateOne({id: id.toString()}, {$set: {isRead: true}});
 
     userAnswer["isCorrect"] === true
       ? res.status(201).send({message: "Wait to Go!!!", correct: true})
