@@ -17,12 +17,11 @@ const getQuestion = async (req, res) => {
       .find()
       .toArray();
 
-    let questionNumber =
-      Math.floor(Math.random() * questionListLength.length) + 1;
-
     let isNotRead = true;
 
     while (isNotRead) {
+      let questionNumber =
+        Math.floor(Math.random() * questionListLength.length) + 1;
       console.log("while in loop");
       const questionFound = await database
         .collection("questions")
@@ -30,7 +29,8 @@ const getQuestion = async (req, res) => {
 
       console.log("questionFound: ", questionFound);
 
-      if (questionFound.isRead === false) {
+      if (questionFound.isRead == false) {
+        console.log("in if statement");
         const noAnswers = questionFound.options.map((option) => {
           delete option["isCorrect"];
           return option;
@@ -45,6 +45,7 @@ const getQuestion = async (req, res) => {
         res.status(200).send({
           status: "success",
           questionWithoutAnswer: questionWithoutAnswer,
+          allQuestions: questionListLength.length,
         });
         isNotRead = false;
       }
