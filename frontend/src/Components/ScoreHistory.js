@@ -3,7 +3,13 @@ import styled from "styled-components";
 import style from "styled-components";
 import Pagination from "./Pagination";
 
-function ScoreHistory({scores, totalScores, setCurrentPage, currentPage}) {
+function ScoreHistory({
+  scores,
+  totalScores,
+  setCurrentPage,
+  currentPage,
+  totalQuestions,
+}) {
   const [scoresPerPage] = React.useState(3);
   const indexOfLastPage = currentPage * scoresPerPage;
   const indexOfFirstPage = indexOfLastPage - scoresPerPage;
@@ -20,12 +26,14 @@ function ScoreHistory({scores, totalScores, setCurrentPage, currentPage}) {
   return (
     <>
       <ScoreList>
-        {scores.length > 0 ? (
-          scores.map((score, index) => {
+        {sortedScored.length > 0 ? (
+          sortedScored.map((score, index) => {
             return (
               <Score key={index}>
                 <Record>{index + 1}:</Record>
-                <Record>{score} / 100</Record>
+                <Record>
+                  {score} / {totalQuestions}
+                </Record>
               </Score>
             );
           })

@@ -17,6 +17,8 @@ function Question() {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [scoresPerPage] = React.useState(2);
 
+  const [totalQuestions, setTotalQuestions] = React.useState(0);
+
   const indexOfLastScore = currentPage * scoresPerPage;
   const indexOfFirstScore = indexOfLastScore - scoresPerPage;
   const currentScores = scores.slice(indexOfFirstScore, indexOfLastScore);
@@ -27,6 +29,7 @@ function Question() {
       .then((questionRetrieved) => {
         setQuestion(questionRetrieved.questionWithoutAnswer);
         setChoices(questionRetrieved.questionWithoutAnswer.options);
+        setTotalQuestions(questionRetrieved.allQuestions);
       })
       .catch((error) => console.log(error));
   }, [next]);
@@ -53,12 +56,15 @@ function Question() {
               totalScores={scores.length}
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
+              totalQuestions={totalQuestions}
             />
           </SideBar>
           <Wrapper>
             <QuestionSelected>
               <WelcomeBanner>
-                <UserScore>Score: {playerScore} / 50</UserScore>{" "}
+                <UserScore>
+                  Score: {playerScore} / {totalQuestions}
+                </UserScore>{" "}
               </WelcomeBanner>
               <QuestionForm>
                 <QuestionAsked>{question.question}</QuestionAsked>
