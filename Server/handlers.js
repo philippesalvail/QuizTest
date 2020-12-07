@@ -22,7 +22,7 @@ const getQuestion = async (req, res) => {
 
     const questionFound = await database
       .collection("questions")
-      .findOne({id: "48"});
+      .findOne({id: questionNumber.toString()});
 
     const noAnswers = questionFound.options.map((option) => {
       delete option["isCorrect"];
