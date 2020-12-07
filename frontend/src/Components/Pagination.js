@@ -1,10 +1,10 @@
-import {number} from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
 const Pagination = ({scoresPerPage, totalScores, paginate}) => {
+  console.log("totalScores: ", totalScores);
   const pageNumbers = [];
-  for (let i = 0; i <= Math.ceil(totalScores / scoresPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(totalScores / scoresPerPage); i++) {
     pageNumbers.push(i);
   }
   console.log("pageNumbers: ", pageNumbers);
@@ -13,9 +13,9 @@ const Pagination = ({scoresPerPage, totalScores, paginate}) => {
     <PageNumbers>
       {pageNumbers.map((pageNumber) => {
         return (
-          <PageNumber key={number}>
-            <PageLink href="#" onClick={() => paginate(number)}>
-              {pageNumber + 1}
+          <PageNumber key={pageNumber}>
+            <PageLink onClick={() => paginate(pageNumber)}>
+              {pageNumber}
             </PageLink>
           </PageNumber>
         );
@@ -25,16 +25,16 @@ const Pagination = ({scoresPerPage, totalScores, paginate}) => {
 };
 
 const PageNumbers = styled.div`
-  diplay: flex;
-  flex-direction: column;
+  display: flex;
 `;
 const PageNumber = styled.div`
-  diplay: flex;
+  display: flex;
+  justify-content: space-evenly;
+  flex: 1;
 `;
 
-const PageLink = styled.a`
+const PageLink = styled.button`
   text-decoration: none;
-  flex: 1;
 `;
 
 export default Pagination;

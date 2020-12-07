@@ -18,4 +18,4 @@
 
 # 7) Once you click on "play again", Your score is then registered on the dashboard.
 
-# 8) The Score dashboard keeps track of all your scores and they are sorted from the best to the worst. Once you refresh the page, the scores will be wiped out.
+# 8) The Score dashboard keeps track of all your scores and they are sorted from the best to the worst. There is pagination implemented allowing the player to flip through pages of his scores. Once the player refresh the page, the scores will be wiped out.
